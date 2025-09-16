@@ -5,7 +5,7 @@ weather_records = []
 # Function to insert a record
 def insert_record(date, city, temperature):
     weather_records.append([date, city, temperature])
-    print("✅ Record inserted successfully!")
+    print("Record inserted successfully!")
 
 
 # Function to display all records
@@ -35,7 +35,7 @@ def delete_record(date, city):
     for record in weather_records:
         if record[0] == date and record[1].lower() == city.lower():
             weather_records.remove(record)
-            print("🗑️ Record deleted successfully.")
+            print("Record deleted successfully.")
             return
     print(" Record not found.")
 
@@ -75,3 +75,4 @@ while True:
 
     else:
         print(" Invalid choice. Try again.")
+
