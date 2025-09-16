@@ -1,100 +1,77 @@
-# Weather Data Storage System using 2D Arrays & ADT
+# Weather Data Storage System
+weather_records = [] 
 
-class WeatherRecordADT:
-    def __init__(self, max_records=50):
-        # 2D Array: Each row = [Date, City, Temperature]
-        self.records = [["" for _ in range(3)] for _ in range(max_records)]
-        self.size = 0
-        self.max_records = max_records
 
-    # Insert new record
-    def insert(self, date, city, temperature):
-        if self.size >= self.max_records:
-            print("Storage is full. Cannot insert new record.")
+# Function to insert a record
+def insert_record(date, city, temperature):
+    weather_records.append([date, city, temperature])
+    print("✅ Record inserted successfully!")
+
+
+# Function to display all records
+def display_records():
+    if not weather_records:
+        print("No records available.")
+        return
+    print("\nDate\t\tCity\t\tTemperature")
+    print("---------------------------------------")
+    for record in weather_records:
+        print(f"{record[0]}\t{record[1]}\t\t{record[2]}")
+
+
+# Function to search records by city
+def search_by_city(city):
+    found = False
+    for record in weather_records:
+        if record[1].lower() == city.lower():
+            print(f" {record[0]} - {record[1]} - {record[2]}°C")
+            found = True
+    if not found:
+        print(" No records found for this city.")
+
+
+# Function to delete a record by date + city
+def delete_record(date, city):
+    for record in weather_records:
+        if record[0] == date and record[1].lower() == city.lower():
+            weather_records.remove(record)
+            print("🗑️ Record deleted successfully.")
             return
-        self.records[self.size][0] = date
-        self.records[self.size][1] = city
-        self.records[self.size][2] = temperature
-        self.size += 1
-        print("Record inserted successfully.")
-
-    # Display all records
-    def display(self):
-        if self.size == 0:
-            print("No weather records available.")
-            return
-        print("\nStored Weather Records:")
-        print("{:<12} {:<15} {:<10}".format("Date", "City", "Temperature"))
-        print("-" * 40)
-        for i in range(self.size):
-            print("{:<12} {:<15} {:<10}".format(
-                self.records[i][0],
-                self.records[i][1],
-                self.records[i][2]
-            ))
-
-    # Retrieve records by city
-    def retrieve_by_city(self, city):
-        found = False
-        print(f"\nWeather Records for {city}:")
-        for i in range(self.size):
-            if self.records[i][1].lower() == city.lower():
-                print(f"Date: {self.records[i][0]}, Temp: {self.records[i][2]}")
-                found = True
-        if not found:
-            print("No records found for this city.")
-
-    # Delete record by date and city
-    def delete(self, date, city):
-        for i in range(self.size):
-            if self.records[i][0] == date and self.records[i][1].lower() == city.lower():
-                # Shift remaining records up
-                for j in range(i, self.size - 1):
-                    self.records[j] = self.records[j + 1]
-                self.records[self.size - 1] = ["", "", ""]
-                self.size -= 1
-                print("Record deleted successfully.")
-                return
-        print("Record not found.")
+    print(" Record not found.")
 
 
-# --------- Main Program ---------
-if __name__ == "__main__":
-    system = WeatherRecordADT()
+#Main Menu 
+while True:
+    print("\n--- Weather Data Storage System (DSA) ---")
+    print("1. Insert Record")
+    print("2. Display Records")
+    print("3. Search by City")
+    print("4. Delete Record")
+    print("5. Exit")
 
-    while True:
-        print("\n--- Weather Data Storage System ---")
-        print("1. Insert Record")
-        print("2. Display All Records")
-        print("3. Retrieve Records by City")
-        print("4. Delete Record")
-        print("5. Exit")
+    choice = input("Enter your choice: ")
 
-        choice = input("Enter choice: ")
+    if choice == "1":
+        date = input("Enter Date (DD-MM-YYYY): ")
+        city = input("Enter City: ")
+        temp = input("Enter Temperature: ")
+        insert_record(date, city, temp)
 
-        if choice == "1":
-            date = input("Enter Date (DD-MM-YYYY): ")
-            city = input("Enter City: ")
-            temp = input("Enter Temperature: ")
-            system.insert(date, city, temp)
+    elif choice == "2":
+        display_records()
 
-        elif choice == "2":
-            system.display()
+    elif choice == "3":
+        city = input("Enter City Name: ")
+        search_by_city(city)
 
-        elif choice == "3":
-            city = input("Enter City to Search: ")
-            system.retrieve_by_city(city)
+    elif choice == "4":
+        date = input("Enter Date of record to delete: ")
+        city = input("Enter City of record to delete: ")
+        delete_record(date, city)
 
-        elif choice == "4":
-            date = input("Enter Date of Record to Delete: ")
-            city = input("Enter City of Record to Delete: ")
-            system.delete(date, city)
+    elif choice == "5":
+        print(" Exiting program. Goodbye!")
+        break
 
-        elif choice == "5":
-            print("Exiting Weather Data Storage System.")
-            break
-
-        else:
-            print("Invalid choice. Try again.")
-
-
+    else:
+        print(" Invalid choice. Try again.")
